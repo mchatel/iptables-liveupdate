@@ -1,8 +1,15 @@
-#!/usr/bin/python
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
+#
+# This file is subject to the terms and conditions defined in
+# file 'LICENSE', which is part of this source code package.
+#
+
+
+import logging
 import subprocess
 import time
-import logging
 
 from util import read_hosts_config
 
@@ -23,6 +30,7 @@ def add_user_host_part(p_cmd_str, p_user, p_host_ip):
         rc_cmd_str = '{0}{1}@{2}'.format(p_cmd_str, p_user, p_host_ip)
 
     return rc_cmd_str
+
 
 # ------------------------------------ MAIN PROGRAM ------------------------------------ #
 if __name__ == "__main__":
@@ -62,17 +70,17 @@ if __name__ == "__main__":
         cmd_str = "mkdir -p " + target_dir
         subprocess.call(cmd_str, shell=True)
 
-        host_scp_str = '{0}:/etc/iptables/rules.v4 {1}/rules.v4 2> /dev/null'\
+        host_scp_str = '{0}:/etc/iptables/rules.v4 {1}/rules.v4 2> /dev/null' \
             .format(add_user_host_part(base_scp_str, one_entry["user"], one_entry["ip"]), target_dir)
 
         subprocess.call(host_scp_str, shell=True)
 
-        host_ssh_str = '{0} \'sudo iptables -t filter --list-rules \' > {1}/rules-live-filter'\
+        host_ssh_str = '{0} \'sudo iptables -t filter --list-rules \' > {1}/rules-live-filter' \
             .format(add_user_host_part(base_ssh_str, one_entry["user"], one_entry["ip"]), target_dir)
 
         subprocess.call(host_ssh_str, shell=True)
 
-        host_ssh_str = '{0} \'sudo iptables -t nat --list-rules \' > {1}/rules-live-nat'\
+        host_ssh_str = '{0} \'sudo iptables -t nat --list-rules \' > {1}/rules-live-nat' \
             .format(add_user_host_part(base_ssh_str, one_entry["user"], one_entry["ip"]), target_dir)
 
         subprocess.call(host_ssh_str, shell=True)
