@@ -13,6 +13,7 @@ import string
 import subprocess
 import sys
 import time
+from pprint import pprint
 
 logger = logging.getLogger()
 
@@ -1436,26 +1437,22 @@ def determine_overall_diffs(iptables_data, time_str):
     return iptables_data
 
 
-def syntax():
+def parse_arguments():
     """
-    Display command syntax, and exit the script.
-    :return:
+    Parse command-line arguments.
+    :return: the parsed arguments
     """
     message = """
-    {0}
+    iptables live-update tool
+    -------------------------------------------------------------------------------------------------------
     By default, the script just performs read-only checks on the host iptables configurations.
-    
+
     If 'liveupdate' is specified, and the host has 'stored' iptables rules that are not 'live' in-kernel, 
     the script attempts to insert the rules 'live' in-kernel if it appears safe to do so.
-    
+
     If 'debug' is specified, additional messages are shown.
     """
-    logger.info(message)
-    sys.exit(1)
-
-
-def parse_arguments():
-    parser = argparse.ArgumentParser(description='iptables live-update tool.')
+    parser = argparse.ArgumentParser(description=message)
     parser.add_argument('--debug', required=False, default=False)
     parser.add_argument('--live-update', required=False, default=False)
     args = parser.parse_args()
@@ -1492,9 +1489,7 @@ if __name__ == "__main__":
 
     logger.debug('Parsing successful.')
 
-    conf_ok, main_iptables_data = confirm_chains_exist_in_kernel(
-        main_iptables_data,
-        iptables_support_wait)
+    conf_ok, main_iptables_data = confirm_chains_exist_in_kernel(main_iptables_data, iptables_support_wait)
 
     if conf_ok == 0:
         logger.error('Chain existence confirmation check failed.')
@@ -1521,3 +1516,6 @@ if __name__ == "__main__":
     remove_test_rules_from_kernel(main_iptables_data)
 
     main_iptables_data = determine_overall_diffs(main_iptables_data, our_time_str)
+    logger.debug(pprint(main_iptables_data))
+
+    sys.exit(0)
