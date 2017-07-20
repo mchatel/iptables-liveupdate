@@ -42,7 +42,7 @@ def parse_arguments():
     -------------------------------------------------------------------------------------------------------
     By default, the script just performs checks on the remote host iptables configurations.
 
-    If 'liveupdate' is specified, and some of the remote hosts have 'stored' iptables rules that are not  
+    If 'live-update' is specified, and some of the remote hosts have 'stored' iptables rules that are not  
     live in-kernel, the script attempts to insert the rules 'live' in-kernel if it appears safe to do so.
 
     If 'debug' is specified, additional messages are shown.
@@ -118,10 +118,10 @@ if __name__ == "__main__":
         cmd_str = '{0} \'T_DIR={1} ; sudo $T_DIR/{2}'.format(host_ssh_str, app_tmpdir, check_dest_script)
 
         if do_live_update != 0:
-            cmd_str += ' liveupdate'
+            cmd_str += ' --live-update=True'
 
         if collected_arguments.debug:
-            cmd_str += ' debug'
+            cmd_str += ' --debug=True'
 
         cmd_str += '\''
 

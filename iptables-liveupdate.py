@@ -1447,7 +1447,7 @@ def parse_arguments():
     -------------------------------------------------------------------------------------------------------
     By default, the script just performs read-only checks on the host iptables configurations.
 
-    If 'liveupdate' is specified, and the host has 'stored' iptables rules that are not 'live' in-kernel, 
+    If 'live-update' is specified, and the host has 'stored' iptables rules that are not 'live' in-kernel, 
     the script attempts to insert the rules 'live' in-kernel if it appears safe to do so.
 
     If 'debug' is specified, additional messages are shown.
