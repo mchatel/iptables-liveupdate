@@ -1,0 +1,28 @@
+Appearance rules for Python source files
+----------------------------------------
+
+- Each file passes the "Inspect Code..." of editor PyCharm
+  with no warnings or errors except for unknown names that
+  can be added to PyCharm's dictionary.
+
+- Conform to several suggested rules in PEP 8 Python Style Guide:
+
+      Maximum line length is 79 characters. In some cases,
+      this influences the coding of the more complex
+      string concatenation operations.
+
+      No spaces at the end of lines (not detected by PyCharm).
+
+      No backslashes used for line continuation.
+
+      All string quotes use the double-quote character,
+      the single-quote is used sparingly within strings and comments.
+
+- Proper docstrings for all functions.
+
+- Uses module "argparse" for command-line argument processing.
+
+- Uses module "logging" for output messages.
+
+- No usage of the print statement.
+
