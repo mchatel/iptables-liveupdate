@@ -24,7 +24,7 @@ def early_log_setup():
     logging.basicConfig(level=logging.INFO, format=log_format)
 
 
-def parse_std_arguments(p_message):
+def parse_std_arguments(p_message, p_add_live_update=0):
     """
     Parse command line arguments.
     Do some application-level error-checking as well.
@@ -32,6 +32,7 @@ def parse_std_arguments(p_message):
     logging system to report the error, show the command help,
     and force an exit.
     :param p_message: overall description of high-level command
+    :param p_add_live_update: add a parameter --live-update
     :return: parsed command line arguments
     """
     parser = argparse.ArgumentParser(description=p_message)
@@ -43,11 +44,12 @@ def parse_std_arguments(p_message):
         choices=["ERROR", "WARNING", "INFO", "DEBUG"],
         help="set the log verbosity level, default=INFO")
     parser.add_argument(
-        "--log", required=False, default="tty", metavar="DESTINATION",
-        help="choose log destination: tty (DEFAULT), or a filename")
-    parser.add_argument(
         "--timeout", required=False, default=5, type=int,
         help="set the SSH connection timeout in seconds, default=5")
+    if p_add_live_update != 0:
+        parser.add_argument(
+            "--live-update", action="store_true",
+            help="modify remote IPtables configuration on the fly")
 
     # Specify mandatory argument
 
@@ -90,12 +92,7 @@ def config_logger(p_args):
     :return:
     """
     loglevel_num = getattr(logging, p_args.loglevel)
-
-    if p_args.log == "tty":
-        logging.basicConfig(level=loglevel_num, format=log_format)
-    else:
-        logging.basicConfig(
-            level=loglevel_num, filename=p_args.log, format=log_format)
+    logging.basicConfig(level=loglevel_num, format=log_format)
 
 
 def gen_no_unicode_data(p_data):
@@ -108,7 +105,7 @@ def gen_no_unicode_data(p_data):
     :return: copy of the data structure with no Unicode strings
     """
     if isinstance(p_data, dict):
-        rc_data = {}
+        rc_data = dict()
         for k in p_data.keys():
             k_str = str(k)
             # Interpret a key that starts with a "#" as a

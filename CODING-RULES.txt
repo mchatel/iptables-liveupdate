@@ -26,3 +26,7 @@ Appearance rules for Python source files
 
 - No usage of the print statement.
 
+- Conform to suggestions from http://python-future.org/what_else.html
+  and use "dict()" instead of "{}" for all variables initialized
+  with empty dictionaries. This may have performance impacts.
+
