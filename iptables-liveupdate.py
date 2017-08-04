@@ -387,7 +387,7 @@ def parse_rules(p_lines):
             cur_tokens = cur_tokens[1:]
             cur_line = cur_line[8:]
 
-            while (len(cur_line) > 0) and (cur_line[0] == " "):
+            while len(cur_line) > 0 and cur_line[0] == " ":
                 cur_line = cur_line[1:]
 
         if len(cur_tokens) <= 0:
@@ -1193,7 +1193,7 @@ def determine_one_chain_diffs(p_filter_data, p_tb_name,
 
             t_rule = tmpload_chain_data["rules"][rule_idx]
 
-            if (t_rule["matched_offset"] < 0) and (t_rule["delete"] == 0):
+            if t_rule["matched_offset"] < 0 and t_rule["delete"] == 0:
                 # An unmatched NON-DELETE=INSERT rule
                 applicable_rule_idx += 1
                 t_rule["insert_pos"] = applicable_rule_idx
