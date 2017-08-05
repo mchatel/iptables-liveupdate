@@ -84,20 +84,20 @@ if __name__ == "__main__":
             log.debug("For host '%s', trying to get file %s ...",
                       item["name"], src_file)
 
-            t_cmd = "{0}:{1} {2}/{3} 2> /dev/null".format(
+            t_cmd = "{0}:{1} {2}/{3}".format(
                         part0, src_file, target_dir, dst_file)
             subprocess.call(t_cmd, shell=True)
 
-        part0 = add_user_host_part(base_ssh_str, item["user"], item["ip"])
-
         log.debug("For host '%s', trying to get in-kernel config...",
                   item["name"])
+
+        part0 = add_user_host_part(base_ssh_str, item["user"], item["ip"])
 
         for one_try in live_try_list:
             cmd_name = one_try[0]
             dst_file_base = one_try[1]
 
-            for one_table in ["filter", "nat"]:
+            for one_table in ["filter", "nat", "mangle", "raw", "security"]:
                 t_cmd = "{0} 'sudo {1} -t {2} {3}' > {4}/{5}-{6}".format(
                             part0, cmd_name, one_table, "--list-rules",
                             target_dir, dst_file_base, one_table)
